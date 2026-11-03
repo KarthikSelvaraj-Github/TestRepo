@@ -1,0 +1,137 @@
+
+# Student Grade Manager
+
+students = []
+
+
+# Calculate grade based on average
+def calculate_grade(average):
+    if average >= 90:
+        return "A"
+    elif average >= 80:
+        return "B"
+    elif average >= 70:
+        return "C"
+    elif average >= 60:
+        return "D"
+    else:
+        return "F"
+
+
+# Get valid marks from user
+def get_marks(subject):
+    while True:
+        try:
+            marks = float(input(f"Enter {subject} marks (0-100): "))
+
+            if 0 <= marks <= 100:
+                return marks
+            else:
+                print("Marks must be between 0 and 100.")
+
+        except ValueError:
+            print("Please enter a valid number.")
+
+
+# Add student
+def add_student():
+    print("\n--- Add Student ---")
+
+    student_id = input("Enter Student ID: ")
+
+    # Check duplicate student ID
+    for student in students:
+        if student["id"] == student_id:
+            print("Student ID already exists!")
+            return
+
+    name = input("Enter Student Name: ")
+
+    # Take marks as input
+    python_marks = get_marks("Python")
+    maths_marks = get_marks("Mathematics")
+    science_marks = get_marks("Science")
+
+    total = python_marks + maths_marks + science_marks
+    average = total / 3
+    grade = calculate_grade(average)
+
+    student = {
+        "id": student_id,
+        "name": name,
+        "python": python_marks,
+        "maths": maths_marks,
+        "science": science_marks,
+        "total": total,
+        "average": average,
+        "grade": grade
+    }
+
+    students.append(student)
+
+    print("\nStudent added successfully!")
+
+
+# View all students
+def view_students():
+    print("\n--- Student Records ---")
+
+    if not students:
+        print("No student records found.")
+        return
+
+    for student in students:
+        print("\nStudent ID:", student["id"])
+        print("Name:", student["name"])
+        print("Python:", student["python"])
+        print("Mathematics:", student["maths"])
+        print("Science:", student["science"])
+        print("Total:", student["total"])
+        print("Average:", round(student["average"], 2))
+        print("Grade:", student["grade"])
+
+
+# Search student
+def search_student():
+    student_id = input("\nEnter Student ID to search: ")
+
+    for student in students:
+        if student["id"] == student_id:
+            print("\nStudent Found!")
+            print("Name:", student["name"])
+            print("Total:", student["total"])
+            print("Average:", round(student["average"], 2))
+            print("Grade:", student["grade"])
+            return
+
+    print("Student not found!")
+
+
+# Main menu
+while True:
+
+    print("\n==============================")
+    print("    STUDENT GRADE MANAGER")
+    print("==============================")
+    print("1. Add Student")
+    print("2. View All Students")
+    print("3. Search Student")
+    print("4. Exit")
+
+    choice = input("\nEnter your choice: ")
+
+    if choice == "1":
+        add_student()
+
+    elif choice == "2":
+        view_students()
+
+    elif choice == "3":
+        search_student()
+
+    elif choice == "4":
+        print("Thank you for using Student Grade Manager!")
+        break
+
+    else:
+        print("Invalid choice. Please try again.")
